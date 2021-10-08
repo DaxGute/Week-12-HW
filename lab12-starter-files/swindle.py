@@ -6,10 +6,20 @@ def readBookDatabase(filename):
         This list will be returned and will serve as availableBooks. """
     infile = open(filename, 'r')
     availableBooks = []
-    for book in infile:
+    for bookInfo in infile:
         # TODO: read in book info (title, author, year published)
-        print(book)
+        bookInfoArray = ["", "", "", ""]
+        currentInfoIndex = 0
+        for char in bookInfo:
+            if char != ",":
+                bookInfoArray[currentInfoIndex] += char
+            else:
+                currentInfoIndex += 1
 
+        newBook = Book(bookInfoArray[0], bookInfoArray[1], bookInfoArray[2], bookInfoArray[3])
+        availableBooks.append(newBook)
+
+    return availableBooks
         # TODO: using the information just obtained from the file, create a
         # Book object with this data and add it to the availableBooks list
 
@@ -84,15 +94,33 @@ class Swindle(object):
 
 
     def buy(self):
-        showAvailable(self)
+        self.showAvailable()
+        bookInputInvalid = True 
+        while (bookInputInvalid):
+            try:
+                intChoice = int(input("Which book would you like to buy? (0 to skip): "))
+                if (0 <= intChoice <= len(self.availableBooks)): 
+                    bookInputInvalid = False
+                else: 
+                    print("invalid input, try again")
+            except:
+                print("invalid input, try again")
+
+        if intChoice != 0:
+            self.ownedBooks.append(self.availableBooks[intChoice-1])
+            print("\nYou've successfully purchased the book: " + self.availableBooks[intChoice-1].getTitle())
+
+
+            
+        
 
     def showOwned(self):
         for book in self.ownedBooks:
             print(book.toString())
 
     def showAvailable(self):
-        for book in self.availableBooks:
-            print(book.toString())
+        for i in range(len(self.availableBooks)):
+            print(str(i + 1) + ") " + self.availableBooks[i].toString())
 
     def getOwner(self):
         return self.owner
