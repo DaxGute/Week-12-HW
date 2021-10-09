@@ -11,11 +11,16 @@ class Book(object):
 
     def toString(self):
         """ pretty-print info about this object """
-        printStringFormat = "{bookName:>25} by {authorDate:>20}"
+        printStringFormat = "{bookName:>25} by {authorDate:>27}"
         bookName = "" + self.title
         authorDate = "" + self.author + " (" + str(self.year) + ")"
         return printStringFormat.format(bookName=bookName, authorDate=authorDate)
-        
+
+    def __str__(self):
+        """ pretty-print info about this object """
+        ###  TO BE COMPLETED BY YOU  ###
+        pass
+
     def getFilename(self):
         return self.filename
 
@@ -42,8 +47,6 @@ class Book(object):
 
     def setBookmark(self, pageNum):
         self.bookmark = pageNum
-
-    
 
     
     ###  METHODS TO BE COMPLETED BY YOU  ###

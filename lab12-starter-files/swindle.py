@@ -6,8 +6,10 @@ def readBookDatabase(filename):
         This list will be returned and will serve as availableBooks. """
     infile = open(filename, 'r')
     availableBooks = []
-    for bookInfo in infile:
+    for book in infile:
+        bookInfo = bookInfo.strip()
         # TODO: read in book info (title, author, year published)
+        # TODO: ask if its also filename
         bookInfoArray = ["", "", "", ""]
         currentInfoIndex = 0
         for char in bookInfo:
@@ -93,37 +95,60 @@ class Swindle(object):
         return
 
 
+    ###  MORE METHODS TO BE COMPLETED BY YOU  ###
+
     def buy(self):
         self.showAvailable()
+        print("")
         bookInputInvalid = True 
         while (bookInputInvalid):
-            try:
-                intChoice = int(input("Which book would you like to buy? (0 to skip): "))
-                if (0 <= intChoice <= len(self.availableBooks)): 
-                    bookInputInvalid = False
-                else: 
-                    print("invalid input, try again")
-            except:
+            intChoice = int(input("Which book would you like to buy? (0 to skip): "))
+            if (0 <= intChoice <= len(self.availableBooks)): 
+                bookInputInvalid = False
+            else: 
                 print("invalid input, try again")
 
         if intChoice != 0:
             self.ownedBooks.append(self.availableBooks[intChoice-1])
+            self.availableBooks.pop(intChoice-1)
             print("\nYou've successfully purchased the book: " + self.availableBooks[intChoice-1].getTitle())
 
 
+    def read(self):
+        self.showOwned()
+        print("")
+        bookInputInvalid = True 
+        while (bookInputInvalid):
+            intChoice = int(input("Which book would you like to buy? (0 to skip): "))
+            if (0 <= intChoice <= len(self.ownedBooks)): 
+                bookInputInvalid = False
+            else: 
+                print("invalid input, try again")
+    
+        print("")
+        if intChoice != 0:
+            readingBook = self.ownedBooks[intChoice-1]
+            self.displayText(readingBook)
+            print("\nSetting bookmark in " + readingBook.title + " at page " + str(readingBook.getBookmark()))
             
         
 
     def showOwned(self):
-        for book in self.ownedBooks:
-            print(book.toString())
+        if len(self.ownedBooks) > 0:
+            print("\nBooks you own: ")
+            for i in range(len(self.ownedBooks)):
+                print(str(i + 1) + ") " + self.ownedBooks[i].toString())
+        else:
+            print("\nYou don't own any books!")
 
     def showAvailable(self):
+        print("\nAvailable books: ")
         for i in range(len(self.availableBooks)):
             print(str(i + 1) + ") " + self.availableBooks[i].toString())
 
     def getOwner(self):
         return self.owner
+
 
 
 if __name__ == '__main__':
