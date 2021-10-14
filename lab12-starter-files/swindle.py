@@ -7,23 +7,12 @@ def readBookDatabase(filename):
     infile = open(filename, 'r')
     availableBooks = []
     for book in infile:
-        bookInfo = bookInfo.strip()
-        # TODO: read in book info (title, author, year published)
-        # TODO: ask if its also filename
-        bookInfoArray = ["", "", "", ""]
-        currentInfoIndex = 0
-        for char in bookInfo:
-            if char != ",":
-                bookInfoArray[currentInfoIndex] += char
-            else:
-                currentInfoIndex += 1
-
+        bookInfo = book.strip()
+        bookInfoArray = bookInfo.split(",")
         newBook = Book(bookInfoArray[0], bookInfoArray[1], bookInfoArray[2], bookInfoArray[3])
         availableBooks.append(newBook)
 
     return availableBooks
-        # TODO: using the information just obtained from the file, create a
-        # Book object with this data and add it to the availableBooks list
 
 
 class Swindle(object):
@@ -47,6 +36,7 @@ class Swindle(object):
         validChoices = ['n', 'p', 'q']
         while True:
             readingChoice = str(input("\nn (next); p (previous); q (quit): "))
+            print("")
             if readingChoice in validChoices:
                 return readingChoice
             print("invalid input, try again")
@@ -94,20 +84,30 @@ class Swindle(object):
                 book.setBookmark(currentPage-1)
         return
 
-
-    ###  MORE METHODS TO BE COMPLETED BY YOU  ###
-
-    def buy(self):
-        self.showAvailable()
-        print("")
+    def getChoice(listOfBook, prompt):
+        """ returns the choice of a user after the user chooses an acceptable response"""
+        intChoice = -1
         bookInputInvalid = True 
         while (bookInputInvalid):
-            intChoice = int(input("Which book would you like to buy? (0 to skip): "))
-            if (0 <= intChoice <= len(self.availableBooks)): 
-                bookInputInvalid = False
-            else: 
+            choice = input(prompt)
+            try:
+                intChoice = int(choice)
+                if (0 <= intChoice <= len(listOfBook)): 
+                    bookInputInvalid = False
+                else: 
+                    print("invalid input, try again")
+            except:
                 print("invalid input, try again")
 
+        return intChoice
+
+    def buy(self):
+        """ after viewing from all available books to purchase, the user can choose to purchase
+        one of the selection or (by typing 0) none of the selection. """
+        self.showAvailable()
+        print("")
+        intChoice = Swindle.getChoice(self.availableBooks, "Which book would you like to buy? (0 to skip): ")
+        
         if intChoice != 0:
             self.ownedBooks.append(self.availableBooks[intChoice-1])
             self.availableBooks.pop(intChoice-1)
@@ -115,15 +115,11 @@ class Swindle(object):
 
 
     def read(self):
+        """ after beening shown a selection of all the books a reader can choose one of the books to read. After choosing that book
+        the displayText() method is used to function as the pages. """
         self.showOwned()
         print("")
-        bookInputInvalid = True 
-        while (bookInputInvalid):
-            intChoice = int(input("Which book would you like to buy? (0 to skip): "))
-            if (0 <= intChoice <= len(self.ownedBooks)): 
-                bookInputInvalid = False
-            else: 
-                print("invalid input, try again")
+        intChoice = Swindle.getChoice(self.availableBooks, "Which book would you like to buy? (0 to skip): ")
     
         print("")
         if intChoice != 0:
@@ -131,9 +127,9 @@ class Swindle(object):
             self.displayText(readingBook)
             print("\nSetting bookmark in " + readingBook.title + " at page " + str(readingBook.getBookmark()))
             
-        
 
     def showOwned(self):
+        """ This method shows all of the books that the user owns in a readable format. """
         if len(self.ownedBooks) > 0:
             print("\nBooks you own: ")
             for i in range(len(self.ownedBooks)):
@@ -142,19 +138,41 @@ class Swindle(object):
             print("\nYou don't own any books!")
 
     def showAvailable(self):
+        """ This method shows all the books that are available to purchase in a readable format. """
         print("\nAvailable books: ")
         for i in range(len(self.availableBooks)):
             print(str(i + 1) + ") " + self.availableBooks[i].toString())
 
     def getOwner(self):
+        """ returns the owner of the swindle """
         return self.owner
 
 
-
+#TODO check that end of book roll over actually works
 if __name__ == '__main__':
     print("Testing the Swindle class...")
     owner = "Lionel"
     myswindle = Swindle(owner)
+
+    print("Testing showAvailable...")
+    myswindle.showAvailable()
+
+    print("Testing showOwned...")
+    myswindle.showOwned()
+
+    print("Buying a book...")
+    myswindle.ownedBooks.append(myswindle.availableBooks[2])
+    myswindle.availableBooks.pop(2)
+
+    print("Testing showAvailable...")
+    myswindle.showAvailable()
+
+    print("Testing showOwned...")
+    myswindle.showOwned()
+
+    print("Buying another book...")
+    myswindle.ownedBooks.append(myswindle.availableBooks[2])
+    myswindle.availableBooks.pop(2)
 
     print("Testing showAvailable...")
     myswindle.showAvailable()

@@ -16,15 +16,22 @@ class Book(object):
         authorDate = "" + self.author + " (" + str(self.year) + ")"
         return printStringFormat.format(bookName=bookName, authorDate=authorDate)
 
+
     def __str__(self):
-        """ pretty-print info about this object """
-        ###  TO BE COMPLETED BY YOU  ###
-        pass
+        """ info about this object for the programmer """
+        print("Title: " + self.title)
+        print("Author: " + self.author)
+        print("Year " + self.year)
+        print("Author: " + self.filename)
+        print("Title: " + self.bookmark)
+
 
     def getFilename(self):
+        """ returns the filename of this book """
         return self.filename
 
     def getText(self):
+        """ returns the text of the filename of this book """
         infile = open(self.getFilename(), "r")
         text = ""
         for line in infile:
@@ -34,18 +41,23 @@ class Book(object):
         return text
 
     def getTitle(self):
+        """ returns the title of this book """
         return self.title
 
     def getAuthor(self):
+        """ returns the author of this book """
         return self.author
 
     def getYear(self):
+        """ returns the year of this book """
         return self.year
 
     def getBookmark(self):
+        """ returns the bookmark of this book """
         return self.bookmark
 
     def setBookmark(self, pageNum):
+        """ sets the bookmark of the book at the page number that is passed in"""
         self.bookmark = pageNum
 
     
@@ -65,6 +77,16 @@ if __name__ == '__main__':
     print("Testing getFilename...")
     print(myBook.getFilename())
 
+    #additional tests added below
+    print("Testing getTitle...")
+    print(myBook.getTitle())
+    print("Testing getAuthor...")
+    print(myBook.getAuthor())
+    print("Testing getYear...")
+    print(myBook.getYear())
+    print("Testing getBookmark...")
+    print(myBook.getBookmark())
+
     print("Testing getText...")
     text = myBook.getText()
     print(text[:105])                   # only print the first couple of lines
@@ -72,5 +94,3 @@ if __name__ == '__main__':
     print("bookmark is:", myBook.getBookmark())
     myBook.setBookmark(12)
     print("now bookmark is:", myBook.getBookmark())
-
-    ################ Write additional tests below ###################
