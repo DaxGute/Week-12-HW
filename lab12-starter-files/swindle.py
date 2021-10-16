@@ -112,7 +112,7 @@ class Swindle(object):
             if intChoice != 0:
                 newBook = self.availableBooks.pop(intChoice-1)
                 self.ownedBooks.append(newBook)
-                print("\nYou've successfully purchased the book: " + self.availableBooks[intChoice-1].getTitle())
+                print("\nYou've successfully purchased the book: " + newBook.getTitle())
 
 
     def read(self):
@@ -156,8 +156,6 @@ class Swindle(object):
         """ returns the owner of the swindle """
         return self.owner
 
-
-#TODO check that end of book roll over actually works
 if __name__ == '__main__':
     print("Testing the Swindle class...")
     owner = "Lionel"
