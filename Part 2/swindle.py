@@ -1,6 +1,5 @@
 from book import *
 
-
 def readBookDatabase(filename):
     """ read in book info from bookdb.txt, save each line as a Book object in list.
         This list will be returned and will serve as availableBooks. """
@@ -155,6 +154,7 @@ class Swindle(object):
     def getOwner(self):
         """ returns the owner of the swindle """
         return self.owner
+
 
 if __name__ == '__main__':
     print("Testing the Swindle class...")
