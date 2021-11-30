@@ -1,5 +1,7 @@
-from swindle import *
+from book_classes.swindle import *
 from os.path import isfile
+from graphics.rendering import *
+from graphics.graphics import *
 
 def newUser():
     print("\nSince this is the first time you used it,")
@@ -9,6 +11,7 @@ def newUser():
     return owner
 
 def loadBook(title, bookmark, userSwindle):
+    """ loads a book onto the swindle """
     for i in range(len(userSwindle.availableBooks)):
         book = userSwindle.availableBooks[i]
         if book.getTitle() == title:
@@ -17,7 +20,7 @@ def loadBook(title, bookmark, userSwindle):
             userSwindle.ownedBooks.append(newBook)
             break
 
-def loadPref():
+def loadPref(win):
     """ gets the user preferences """
     if isfile("save.txt"):
         infile = open("save.txt", "r")
@@ -27,7 +30,7 @@ def loadPref():
         infile.close()
 
         username = lines[0].strip()
-        print("Welcome back %s!" % username)
+        welcomeBackMessage(win, username)
         userSwindle = Swindle(username)
 
         for i in range(1, len(lines)):
@@ -39,7 +42,7 @@ def loadPref():
 
         return userSwindle
     else:
-        owner = newUser()                   # Display instructions and get user's name
+        owner = welcomeFirstMessage(win)
         return Swindle(owner)
 
 def savePref(userSwindle):
@@ -66,7 +69,9 @@ def mainMenu():
             print("invalid input, try again")
 
 def main():
-    userSwindle = loadPref()
+    win = GraphWin(width = 500, height = 600) # create a window
+
+    userSwindle = loadPref(win)
 
     while True:
         menuChoice = mainMenu()         # Display ereader's main menu

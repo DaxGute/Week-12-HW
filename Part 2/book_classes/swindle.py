@@ -1,4 +1,4 @@
-from book import *
+from .book import *
 
 def readBookDatabase(filename):
     """ read in book info from bookdb.txt, save each line as a Book object in list.
