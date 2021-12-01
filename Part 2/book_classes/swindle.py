@@ -100,18 +100,12 @@ class Swindle(object):
 
         return intChoice
 
-    def buy(self):
+    def buy(self, intChoice):
         """ after viewing from all available books to purchase, the user can choose to purchase
         one of the selection or (by typing 0) none of the selection. """
-        if len(self.availableBooks) > 0:
-            self.showAvailable()
-            print("")
-            intChoice = Swindle.getChoice(self.availableBooks, "Which book would you like to buy? (0 to skip): ")
-            
-            if intChoice != 0:
-                newBook = self.availableBooks.pop(intChoice-1)
-                self.ownedBooks.append(newBook)
-                print("\nYou've successfully purchased the book: " + newBook.getTitle())
+        if intChoice != 0:
+            newBook = self.availableBooks.pop(intChoice-1)
+            self.ownedBooks.append(newBook)
 
 
     def read(self):

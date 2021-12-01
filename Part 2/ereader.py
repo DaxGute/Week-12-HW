@@ -74,7 +74,7 @@ def main():
     userSwindle = loadPref(win)
 
     while True:
-        menuChoice = mainMenu()         # Display ereader's main menu
+        menuChoice = displayChoices(win)         # Display ereader's main menu
         if menuChoice == 1:
             userSwindle.buy()           # View available books with option to buy
         elif menuChoice == 2:
