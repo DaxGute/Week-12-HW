@@ -76,14 +76,16 @@ def main():
     while True:
         menuChoice = displayChoices(win)         # Display ereader's main menu
         if menuChoice == 1:
-            userSwindle.buy()           # View available books with option to buy
+            buyOptions(win, userSwindle)         # View available books with option to buy
         elif menuChoice == 2:
-            userSwindle.showOwned()     # View owned books
+            showOwned(win, userSwindle)          # View owned books
         elif menuChoice == 3:
-            userSwindle.read()          # Choose a book to read
+            readOptions(win, userSwindle)        # Choose a book to read
         else:
             savePref(userSwindle)       # Turn off ereader (quit the program)
             break 
+    
+    win.close()
 
 
 main()

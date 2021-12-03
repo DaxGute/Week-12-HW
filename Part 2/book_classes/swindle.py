@@ -22,7 +22,7 @@ class Swindle(object):
         self.availableBooks = readBookDatabase("bookdb.txt")    # list of Book objects
         self.owner = owner
         self.ownedBooks = []
-        self.pageLength = 20
+        self.pageLength = 30
 
     def __str__(self):
         """ pretty-print info about this object """
@@ -40,23 +40,32 @@ class Swindle(object):
                 return readingChoice
             print("invalid input, try again")
 
-    def displayPage(self, book):
+    def getPage(self, book):
         """ This method displays a single page at a time (300 chars) """
         bookContents = book.getText()
         bookLinesList = bookContents.split("\n")
         numLines = len(bookLinesList)
-        numPages = numLines // self.pageLength  # calculate total number of pages in book
         page = book.getBookmark()               # get current page (most recently read)
         pageStart = page * self.pageLength
         pageEnd = pageStart + self.pageLength   # display 20 lines per page
         if pageEnd > numLines:
             pageEnd = numLines                  # in case you're at the end of the book
+        pageText = ""
         for i in range(pageStart, pageEnd):
-            print(bookLinesList[i])
-        if numPages == 1:                       # alter page numbers for 1-page books
-            page = 1
-        print("\nShowing page %d out of %d" % (page, numPages))
-        return
+            pageText += bookLinesList[i] + " "
+        pageWords = pageText.split(" ")
+        arbitraryScalarForThisVariable = self.pageLength + (30 - self.pageLength)/4
+        perLine = len(pageText) / arbitraryScalarForThisVariable
+        pageLines = []
+        currentLine = ""
+        for word in pageWords:
+            if len(currentLine) > perLine:
+                pageLines.append(currentLine)
+                currentLine = word + " "
+            else:
+                currentLine += word + " "
+            
+        return pageLines
 
     def displayText(self, book):
         """ This method allows the user to read one of their books.
@@ -83,67 +92,12 @@ class Swindle(object):
                 book.setBookmark(currentPage-1)
         return
 
-    def getChoice(listOfBook, prompt):
-        """ returns the choice of a user after the user chooses an acceptable response"""
-        intChoice = -1
-        bookInputInvalid = True 
-        while (bookInputInvalid):
-            choice = input(prompt)
-            try:
-                intChoice = int(choice)
-                if (0 <= intChoice <= len(listOfBook)): 
-                    bookInputInvalid = False
-                else: 
-                    print("invalid input, try again")
-            except:
-                print("invalid input, try again")
-
-        return intChoice
-
     def buy(self, intChoice):
         """ after viewing from all available books to purchase, the user can choose to purchase
         one of the selection or (by typing 0) none of the selection. """
         if intChoice != 0:
             newBook = self.availableBooks.pop(intChoice-1)
             self.ownedBooks.append(newBook)
-
-
-    def read(self):
-        """ after beening shown a selection of all the books a reader can choose one of the books to read. After choosing that book
-        the displayText() method is used to function as the pages. """
-        self.showOwned()
-        if len(self.ownedBooks) > 0:
-            print("")
-            intChoice = Swindle.getChoice(self.ownedBooks, "Which book would you like to read? (0 to skip): ")
-        
-            print("")
-            if intChoice != 0:
-                readingBook = self.ownedBooks[intChoice-1]
-                self.displayText(readingBook)
-                print("\nSetting bookmark in " + readingBook.title + " at page " + str(readingBook.getBookmark()))
-         
-
-    def showOwned(self):
-        """ This method shows all of the books that the user owns in a readable format. """
-        if len(self.ownedBooks) > 0:
-            print("\nBooks you own: ")
-            for i in range(len(self.ownedBooks)):
-                ownedBookTemplate = "{itemNum:n}) {bookDesc}"
-                bookDesc = self.ownedBooks[i].toString()
-                print(ownedBookTemplate.format(itemNum = i + 1, bookDesc = bookDesc))
-        else:
-            print("\nYou don't own any books!")
-
-    def showAvailable(self):
-        """ This method shows all the books that are available to purchase in a readable format. """
-        if len(self.availableBooks) > 0:
-            print("\nAvailable books: ")
-            for i in range(len(self.availableBooks)):
-                availableBookTemplate = "{itemNum}) {bookDesc}"
-                bookDesc = self.availableBooks[i].toString()
-                print(availableBookTemplate.format(itemNum = i + 1, bookDesc = bookDesc))
-        else:
-            print("There are no books avaiable!")
 
     def getOwner(self):
         """ returns the owner of the swindle """
