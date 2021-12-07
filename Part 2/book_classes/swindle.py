@@ -30,16 +30,6 @@ class Swindle(object):
         s = ""
         return s
 
-    def getLetter(self):
-        """ This method determines what the user wants to do next """
-        validChoices = ['n', 'p', 'q']
-        while True:
-            readingChoice = str(input("\nn (next); p (previous); q (quit): "))
-            print("")
-            if readingChoice in validChoices:
-                return readingChoice
-            print("invalid input, try again")
-
     def getPage(self, book):
         """ This method displays a single page at a time (300 chars) """
         bookContents = book.getText()
